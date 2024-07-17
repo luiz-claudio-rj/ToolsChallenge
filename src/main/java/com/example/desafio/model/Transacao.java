@@ -1,11 +1,10 @@
 package com.example.desafio.model;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,9 +13,16 @@ public class Transacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String cartao;
     private String status;
-    private LocalDateTime dataHora;
+    private String nsu;
+    private String codigoAutorizacao;
 
-    @ManyToOne
+    @Embedded
+    private Descricao descricao;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private FormaPagamento formaPagamento;
 }
+
+

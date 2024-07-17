@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TransacaoService {
@@ -26,7 +27,13 @@ public class TransacaoService {
             transacao.setFormaPagamento(formaPagamento);
         }
 
-        return transacaoRepository.save(transacao);
+        //Gerar NSU e codigo de autorização
+        transacao.setNsu(UUID.randomUUID().toString().replace("-",""));
+        transacao.setCodigoAutorizacao(UUID.randomUUID().toString().replace("-",""));
+
+        transacao.setStatus("AUTORIZADO");
+
+        return transacaoRepository.save(transacao).;
     }
 
     public Transacao consultarTransacao(Long id) {
@@ -35,5 +42,15 @@ public class TransacaoService {
 
     public List<Transacao> consultarTodasTransacoes() {
         return transacaoRepository.findAll();
+    }
+
+    public Transacao estornarTransacao(Long id){
+        Transacao transacao = transacaoRepository.findById(id).orElse(null);
+
+        if(transacao != null){
+            transacao.setStatus("CANCELADO");
+            return transacaoRepository.save(transacao);
+        }
+        return null;
     }
 }

@@ -25,25 +25,21 @@ public class TransacaoController {
         }
     }
 
+    @GetMapping("/estorno/{id}")
+    public ResponseEntity<Transacao> estornarPagamento(@PathVariable Long id) {
+            Transacao transacao = transacaoService.estornarTransacao(id);
+            return transacao != null ? ResponseEntity.ok(transacao) : ResponseEntity.notFound().build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Transacao> consultarTransacao(@PathVariable Long id) {
-        try {
         Transacao transacao = transacaoService.consultarTransacao(id);
-        return ResponseEntity.ok(transacao);
-        } catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(null);
-        }
+        return transacao != null ?  ResponseEntity.ok(transacao) : ResponseEntity.notFound().build();
     }
 
     @GetMapping
     public ResponseEntity<List<Transacao>> consultarTodasTransacoes() {
-        try {
         List<Transacao> transacoes = transacaoService.consultarTodasTransacoes();
         return ResponseEntity.ok(transacoes);
-        } catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(null);
-        }
     }
 }
