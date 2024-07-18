@@ -1,6 +1,7 @@
 package com.example.desafio.handler;
 
 import com.example.desafio.exception.NotFoundException;
+import com.example.desafio.exception.UnprocessableException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,11 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ResponseMessageError> handleNotFoundException(NotFoundException e, HttpServletRequest request) {
         return popularResponseMessageError(e, HttpStatus.NOT_FOUND.value(), request);
+    }
+
+    @ExceptionHandler(UnprocessableException.class)
+    public ResponseEntity<ResponseMessageError> handleUnprocessableException(UnprocessableException e, HttpServletRequest request) {
+        return popularResponseMessageError(e, HttpStatus.UNPROCESSABLE_ENTITY.value(), request);
     }
 
     private static ResponseEntity<ResponseMessageError> popularResponseMessageError(Exception e, Integer status,

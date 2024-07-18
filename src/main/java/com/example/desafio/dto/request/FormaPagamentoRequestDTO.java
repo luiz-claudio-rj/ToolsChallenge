@@ -1,6 +1,6 @@
 package com.example.desafio.dto.request;
 
-import com.example.desafio.model.FormaPagamento;
+import com.example.desafio.model.TipoFormaPagamento;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,15 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FormaPagamentoRequestDTO {
-    private String tipo;
+    private TipoFormaPagamento tipo;
     private String parcelas;
-
-    public FormaPagamento toEntity() {
-        FormaPagamento formaPagamento = new FormaPagamento();
-
-        formaPagamento.setTipo(this.getTipo());
-        formaPagamento.setParcelas(Integer.parseInt(this.getParcelas()));
-
-        return formaPagamento;
-    }
 }

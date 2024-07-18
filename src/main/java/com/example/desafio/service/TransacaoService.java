@@ -2,11 +2,13 @@ package com.example.desafio.service;
 
 import com.example.desafio.dto.request.TransacaoRequestDTO;
 import com.example.desafio.exception.NotFoundException;
+import com.example.desafio.exception.UnprocessableException;
 import com.example.desafio.model.Descricao;
 import com.example.desafio.model.FormaPagamento;
 import com.example.desafio.model.Status;
 import com.example.desafio.model.Transacao;
 import com.example.desafio.repository.TransacaoRepository;
+import com.example.desafio.validators.TransacaoRequestValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,17 @@ public class TransacaoService {
     @Autowired
     private TransacaoRepository transacaoRepository;
 
+
     public Transacao salvarTransacao(TransacaoRequestDTO transacaoRequestDTO) {
+
+        TransacaoRequestValidator validator = new TransacaoRequestValidator();
+        validator.setTransacao(transacaoRequestDTO);
+        validator.setTransacaoRepository(transacaoRepository);
+        String validacao = validator.validate();
+        if (!validacao.isEmpty()) {
+            throw new UnprocessableException(validacao);
+        }
+
         Transacao transacao = new Transacao();
 
         transacao.setId(transacaoRequestDTO.getTransacao().getId());

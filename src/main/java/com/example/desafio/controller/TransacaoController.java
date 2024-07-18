@@ -18,13 +18,8 @@ public class TransacaoController {
 
     @PostMapping("/pagamento")
     public ResponseEntity<Transacao> realizarTransacao(@RequestBody TransacaoRequestDTO transacaoRequestDTO) {
-        try {
-            Transacao transacao = transacaoService.salvarTransacao(transacaoRequestDTO);
-            return ResponseEntity.ok(transacao);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(null);
-        }
+        Transacao transacao = transacaoService.salvarTransacao(transacaoRequestDTO);
+        return ResponseEntity.ok(transacao);
     }
 
     @GetMapping("/estorno/{id}")
