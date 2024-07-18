@@ -1,4 +1,6 @@
 package com.example.desafio.controller;
+
+import com.example.desafio.dto.request.TransacaoRequestDTO;
 import com.example.desafio.model.Transacao;
 import com.example.desafio.service.TransacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,11 @@ public class TransacaoController {
     private TransacaoService transacaoService;
 
     @PostMapping("/pagamento")
-    public ResponseEntity<Transacao> realizarPagamento(@RequestBody Transacao transacao) {
+    public ResponseEntity<Transacao> realizarTransacao(@RequestBody TransacaoRequestDTO transacaoRequestDTO) {
         try {
-            Transacao novaTransacao = transacaoService.salvarTransacao(transacao);
-            return ResponseEntity.ok(novaTransacao);
-        } catch (Exception e){
+            Transacao transacao = transacaoService.salvarTransacao(transacaoRequestDTO);
+            return ResponseEntity.ok(transacao);
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(null);
         }
@@ -27,14 +29,14 @@ public class TransacaoController {
 
     @GetMapping("/estorno/{id}")
     public ResponseEntity<Transacao> estornarPagamento(@PathVariable Long id) {
-            Transacao transacao = transacaoService.estornarTransacao(id);
-            return transacao != null ? ResponseEntity.ok(transacao) : ResponseEntity.notFound().build();
+        Transacao transacao = transacaoService.estornarTransacao(id);
+        return transacao != null ? ResponseEntity.ok(transacao) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Transacao> consultarTransacao(@PathVariable Long id) {
         Transacao transacao = transacaoService.consultarTransacao(id);
-        return transacao != null ?  ResponseEntity.ok(transacao) : ResponseEntity.notFound().build();
+        return transacao != null ? ResponseEntity.ok(transacao) : ResponseEntity.notFound().build();
     }
 
     @GetMapping

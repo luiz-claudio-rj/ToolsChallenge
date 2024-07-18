@@ -1,17 +1,15 @@
 package com.example.desafio.model;
 
+import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import lombok.NoArgsConstructor;
 
-@Entity
+@Embeddable
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class FormaPagamento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String tipo;
-    private int parcelas;
+    private Integer parcelas;
 }
