@@ -17,12 +17,16 @@ public class TransacaoRequestValidator {
     private TransacaoRequestDTO transacao;
     private TransacaoRepository transacaoRepository;
 
+    public TransacaoRequestValidator(TransacaoRepository transacaoRepository) {
+        this.transacaoRepository = transacaoRepository;
+    }
+
     public String validate() {
         if (transacao == null) {
-            return "Transacao não pode ser nula";
+            return "Transação não pode ser nula";
         }
         if (transacao.getTransacao() == null) {
-            return "Transacao não pode ser nula";
+            return "Transação não pode ser nula";
         }
         if (transacao.getTransacao().getId() == null || transacao.getTransacao().getId().isEmpty()) {
             return "Verificar id da transação";
@@ -37,10 +41,10 @@ public class TransacaoRequestValidator {
             return "Verificar valor da transação";
         }
         if (transacao.getTransacao().getDescricao().getDataHora() == null || transacao.getTransacao().getDescricao().getDataHora().isEmpty()) {
-            return "Verificar dataHora da transação";
+            return "Verificar data e hora da transação";
         }
         if (transacao.getTransacao().getDescricao().getEstabelecimento() == null || transacao.getTransacao().getDescricao().getEstabelecimento().isEmpty()) {
-            return "Verificar establecimento da transação";
+            return "Verificar estabelecimento da transação";
         }
         if (transacao.getTransacao().getFormaPagamento() == null) {
             return "Verificar forma de pagamento da transação";
@@ -49,7 +53,7 @@ public class TransacaoRequestValidator {
             return "Verificar parcelas da transação";
         }
         if (transacao.getTransacao().getFormaPagamento().getTipo() == null) {
-            return "Verificar tipo da transação";
+            return "Verificar tipo da forma de pagamento";
         }
 
         try {
@@ -62,12 +66,12 @@ public class TransacaoRequestValidator {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             LocalDateTime.parse(transacao.getTransacao().getDescricao().getDataHora(), formatter);
         } catch (Exception e) {
-            return "DataHora inválida";
+            return "Data e hora inválidas";
         }
 
         try {
             double valor = Double.parseDouble(transacao.getTransacao().getDescricao().getValor());
-            if (valor < 0) {
+            if (valor <= 0) {
                 return "Valor inválido";
             }
         } catch (NumberFormatException e) {
@@ -75,7 +79,10 @@ public class TransacaoRequestValidator {
         }
 
         try {
-            Integer.parseInt(transacao.getTransacao().getFormaPagamento().getParcelas());
+            Integer parcela = Integer.parseInt(transacao.getTransacao().getFormaPagamento().getParcelas());
+            if (parcela <= 0) {
+                return "Parcelas inválidas";
+            }
         } catch (NumberFormatException e) {
             return "Parcelas inválidas";
         }

@@ -26,9 +26,11 @@ public class TransacaoService {
 
     public Transacao salvarTransacao(TransacaoRequestDTO transacaoRequestDTO) {
 
-        TransacaoRequestValidator validator = new TransacaoRequestValidator();
-        validator.setTransacao(transacaoRequestDTO);
-        validator.setTransacaoRepository(transacaoRepository);
+        TransacaoRequestValidator validator = new TransacaoRequestValidator(
+                transacaoRequestDTO,
+                transacaoRepository
+        );
+
         String validacao = validator.validate();
         if (!validacao.isEmpty()) {
             throw new UnprocessableException(validacao);
