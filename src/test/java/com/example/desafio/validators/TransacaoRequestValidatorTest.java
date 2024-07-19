@@ -26,6 +26,12 @@ class TransacaoRequestValidatorTest {
     @Mock
     private TransacaoRepository transacaoRepository;
 
+    private TransacaoRequestValidator criaValidator(){
+        return new TransacaoRequestValidator(
+                transacaoRepository
+        );
+    }
+
     @Test
     @DisplayName("Quando os dados são válidos, então a validação é bem sucedida")
     void quandoDadosValidos_entaoValidacaoSucesso() {
@@ -48,8 +54,7 @@ class TransacaoRequestValidatorTest {
 
         dto.setTransacao(transacao);
 
-        TransacaoRequestValidator validator = new TransacaoRequestValidator();
-        validator.setTransacaoRepository(transacaoRepository);
+        TransacaoRequestValidator validator = criaValidator();
         validator.setTransacao(dto);
 
         String validacao = validator.validate();
@@ -60,12 +65,11 @@ class TransacaoRequestValidatorTest {
     @Test
     @DisplayName("Quando os dados são inválidos, então a validação falha")
     void quandoDadosInvalidos_entaoValidacaoErro() {
-        TransacaoRequestValidator validator = new TransacaoRequestValidator();
-        validator.setTransacaoRepository(transacaoRepository);
+        TransacaoRequestValidator validator = criaValidator();
 
         TransacaoRequestDTO dto = new TransacaoRequestDTO();
         validator.setTransacao(dto);
-        assertEquals("Transacao não pode ser nula",validator.validate());
+        assertEquals("Transação não pode ser nula",validator.validate());
 
         TransacaoDTO transacao = new TransacaoDTO();
         dto.setTransacao(transacao);
@@ -88,12 +92,12 @@ class TransacaoRequestValidatorTest {
 
         transacao.setDescricao(descricao);
         dto.setTransacao(transacao);
-        assertEquals("Verificar dataHora da transação",validator.validate());
+        assertEquals("Verificar data e hora da transação",validator.validate());
 
         descricao.setDataHora("01/05/2021 18:30:00");
         transacao.setDescricao(descricao);
         dto.setTransacao(transacao);
-        assertEquals("Verificar establecimento da transação",validator.validate());
+        assertEquals("Verificar estabelecimento da transação",validator.validate());
 
         descricao.setEstabelecimento("Estabelecimento");
         transacao.setDescricao(descricao);
@@ -110,7 +114,7 @@ class TransacaoRequestValidatorTest {
         transacao.setFormaPagamento(formaPagamento);
         transacao.setDescricao(descricao);
         dto.setTransacao(transacao);
-        assertEquals("Verificar tipo da transação",validator.validate());
+        assertEquals("Verificar tipo da forma de pagamento",validator.validate());
 
         formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
         transacao.setFormaPagamento(formaPagamento);
@@ -141,12 +145,6 @@ class TransacaoRequestValidatorTest {
         return dto;
     }
 
-    private TransacaoRequestValidator criaValidator(){
-        return new TransacaoRequestValidator(
-                transacaoRepository
-        );
-    }
-
     @Test
     @DisplayName("Quando a dataHora é invalida, então a validação falha")
     void quandoDataHoraInvalida_entaoValidacaoErro() {
@@ -158,7 +156,7 @@ class TransacaoRequestValidatorTest {
 
         validator.setTransacao(dto);
 
-        assertEquals("DataHora inválida", validator.validate());
+        assertEquals("Data e hora inválidas", validator.validate());
 
     }
     @Test
@@ -202,13 +200,13 @@ class TransacaoRequestValidatorTest {
 
         validator.setTransacao(dto);
 
-        assertEquals("Verificar establecimento da transação", validator.validate());
+        assertEquals("Verificar estabelecimento da transação", validator.validate());
 
         descricao.setEstabelecimento(null);
 
         validator.setTransacao(dto);
 
-        assertEquals("Verificar establecimento da transação", validator.validate());
+        assertEquals("Verificar estabelecimento da transação", validator.validate());
 
         descricao.setEstabelecimento("ABC");
 
@@ -281,7 +279,7 @@ class TransacaoRequestValidatorTest {
 
         validator.setTransacao(dto);
 
-        assertEquals("Verificar tipo da transação", validator.validate());
+        assertEquals("Verificar tipo da forma de pagamento", validator.validate());
 
         formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
 

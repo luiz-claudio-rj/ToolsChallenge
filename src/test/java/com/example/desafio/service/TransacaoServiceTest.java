@@ -82,7 +82,7 @@ class TransacaoServiceTest {
             transacaoService.salvarTransacao(transacao);
         });
 
-        assertEquals("Transacao não pode ser nula", exception.getMessage());
+        assertEquals("Transação não pode ser nula", exception.getMessage());
     }
 
     @Test
