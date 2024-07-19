@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 
 @Data
 @AllArgsConstructor
@@ -70,8 +71,13 @@ public class TransacaoRequestValidator {
         }
 
         try {
-            double valor = Double.parseDouble(transacao.getTransacao().getDescricao().getValor());
-            if (valor <= 0) {
+            String valorString = transacao.getTransacao().getDescricao().getValor();
+            Pattern pattern = Pattern.compile("^\\d+\\.\\d{2}$");
+            if (!pattern.matcher(valorString).matches()) {
+                return "Valor inválido";
+            }
+            double valorNumerico = Double.parseDouble(transacao.getTransacao().getDescricao().getValor());
+            if (valorNumerico <= 0) {
                 return "Valor inválido";
             }
         } catch (NumberFormatException e) {

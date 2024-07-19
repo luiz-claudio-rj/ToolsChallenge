@@ -183,6 +183,19 @@ class TransacaoRequestValidatorTest {
         validator.setTransacao(dto);
 
         assertEquals("Valor inválido", validator.validate());
+
+        descricao.setValor("0.001");
+
+        validator.setTransacao(dto);
+
+        assertEquals("Valor inválido", validator.validate());
+
+        descricao.setValor(".0001");
+
+        validator.setTransacao(dto);
+
+        assertEquals("Valor inválido", validator.validate());
+
         descricao.setValor("0.01");
 
         validator.setTransacao(dto);
