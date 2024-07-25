@@ -3,13 +3,15 @@ package com.example.desafio.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Embeddable
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Descricao {
