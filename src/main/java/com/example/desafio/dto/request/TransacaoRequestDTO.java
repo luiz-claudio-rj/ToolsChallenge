@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 /**
  * Classe que representa a requisição de uma transação
  */
@@ -13,6 +14,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TransacaoRequestDTO {
 
-    private TransacaoDTO transacao;
+  private TransacaoDTO transacao;
 }
 

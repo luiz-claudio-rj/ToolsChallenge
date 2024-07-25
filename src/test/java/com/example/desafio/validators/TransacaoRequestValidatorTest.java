@@ -18,299 +18,302 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisplayName("Dado um validador de requisição de transação")
 class TransacaoRequestValidatorTest {
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-    @Mock
-    private TransacaoRepository transacaoRepository;
-
-    private TransacaoRequestValidator criaValidator(){
-        return new TransacaoRequestValidator(
-                transacaoRepository
-        );
-    }
-
-    @Test
-    @DisplayName("Quando os dados são válidos, então a validação é bem sucedida")
-    void quandoDadosValidos_entaoValidacaoSucesso() {
-        TransacaoRequestDTO dto = new TransacaoRequestDTO();
-
-        TransacaoDTO transacao = new TransacaoDTO();
-        transacao.setId("123");
-        transacao.setCartao("1234");
-
-        DescricaoRequestDTO descricao = new DescricaoRequestDTO();
-        descricao.setValor("100.00");
-        descricao.setDataHora("01/05/2021 18:30:00");
-        descricao.setEstabelecimento("Estabelecimento");
-        transacao.setDescricao(descricao);
-
-        FormaPagamentoRequestDTO formaPagamento = new FormaPagamentoRequestDTO();
-        formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
-        formaPagamento.setParcelas("1");
-        transacao.setFormaPagamento(formaPagamento);
-
-        dto.setTransacao(transacao);
-
-        TransacaoRequestValidator validator = criaValidator();
-        validator.setTransacao(dto);
-
-        String validacao = validator.validate();
-
-        assertTrue(validacao.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Quando os dados são inválidos, então a validação falha")
-    void quandoDadosInvalidos_entaoValidacaoErro() {
-        TransacaoRequestValidator validator = criaValidator();
-
-        TransacaoRequestDTO dto = new TransacaoRequestDTO();
-        validator.setTransacao(dto);
-        assertEquals("Transação não pode ser nula",validator.validate());
-
-        TransacaoDTO transacao = new TransacaoDTO();
-        dto.setTransacao(transacao);
-        assertEquals("Verificar id da transação",validator.validate());
+  @BeforeEach
+  void setUp() {
+	MockitoAnnotations.openMocks(this);
+  }
+
+  @Mock
+  private TransacaoRepository transacaoRepository;
+
+  private TransacaoRequestValidator criaValidator() {
+	return new TransacaoRequestValidator(
+		transacaoRepository
+	);
+  }
+
+  @Test
+  @DisplayName("Quando os dados são válidos, então a validação é bem sucedida")
+  void quandoDadosValidos_entaoValidacaoSucesso() {
+	TransacaoRequestDTO dto = new TransacaoRequestDTO();
+
+	TransacaoDTO transacao = new TransacaoDTO();
+	transacao.setId("123");
+	transacao.setCartao("1234");
+
+	DescricaoRequestDTO descricao = new DescricaoRequestDTO();
+	descricao.setValor("100.00");
+	descricao.setDataHora("01/05/2021 18:30:00");
+	descricao.setEstabelecimento("Estabelecimento");
+	transacao.setDescricao(descricao);
+
+	FormaPagamentoRequestDTO formaPagamento = new FormaPagamentoRequestDTO();
+	formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
+	formaPagamento.setParcelas("1");
+	transacao.setFormaPagamento(formaPagamento);
+
+	dto.setTransacao(transacao);
+
+	TransacaoRequestValidator validator = criaValidator();
+	validator.setTransacao(dto);
+
+	String validacao = validator.validate();
+
+	assertTrue(validacao.isEmpty());
+  }
 
-        transacao.setId("123");
-        dto.setTransacao(transacao);
-        assertEquals("Verificar cartão da transação",validator.validate());
+  @Test
+  @DisplayName("Quando os dados são inválidos, então a validação falha")
+  void quandoDadosInvalidos_entaoValidacaoErro() {
+	TransacaoRequestValidator validator = criaValidator();
+
+	TransacaoRequestDTO dto = new TransacaoRequestDTO();
+	validator.setTransacao(dto);
+	assertEquals("Transação não pode ser nula", validator.validate());
 
-        transacao.setCartao("1234");
-        dto.setTransacao(transacao);
-        assertEquals("Verificar descrição da transação",validator.validate());
+	TransacaoDTO transacao = new TransacaoDTO();
+	dto.setTransacao(transacao);
+	assertEquals("Verificar id da transação", validator.validate());
 
-        DescricaoRequestDTO descricao = new DescricaoRequestDTO();
-        transacao.setDescricao(descricao);
-        dto.setTransacao(transacao);
-        assertEquals("Verificar valor da transação",validator.validate());
+	transacao.setId("123");
+	dto.setTransacao(transacao);
+	assertEquals("Verificar cartão da transação", validator.validate());
 
-        descricao.setValor("100.00");
+	transacao.setCartao("1234");
+	dto.setTransacao(transacao);
+	assertEquals("Verificar descrição da transação", validator.validate());
 
-        transacao.setDescricao(descricao);
-        dto.setTransacao(transacao);
-        assertEquals("Verificar data e hora da transação",validator.validate());
+	DescricaoRequestDTO descricao = new DescricaoRequestDTO();
+	transacao.setDescricao(descricao);
+	dto.setTransacao(transacao);
+	assertEquals("Verificar valor da transação", validator.validate());
 
-        descricao.setDataHora("01/05/2021 18:30:00");
-        transacao.setDescricao(descricao);
-        dto.setTransacao(transacao);
-        assertEquals("Verificar estabelecimento da transação",validator.validate());
+	descricao.setValor("100.00");
 
-        descricao.setEstabelecimento("Estabelecimento");
-        transacao.setDescricao(descricao);
-        dto.setTransacao(transacao);
-        assertEquals("Verificar forma de pagamento da transação",validator.validate());
+	transacao.setDescricao(descricao);
+	dto.setTransacao(transacao);
+	assertEquals("Verificar data e hora da transação", validator.validate());
 
-        FormaPagamentoRequestDTO formaPagamento = new FormaPagamentoRequestDTO();
-        transacao.setFormaPagamento(formaPagamento);
-        transacao.setDescricao(descricao);
-        dto.setTransacao(transacao);
-        assertEquals("Verificar parcelas da transação",validator.validate());
+	descricao.setDataHora("01/05/2021 18:30:00");
+	transacao.setDescricao(descricao);
+	dto.setTransacao(transacao);
+	assertEquals("Verificar estabelecimento da transação", validator.validate());
 
-        formaPagamento.setParcelas("1");
-        transacao.setFormaPagamento(formaPagamento);
-        transacao.setDescricao(descricao);
-        dto.setTransacao(transacao);
-        assertEquals("Verificar tipo da forma de pagamento",validator.validate());
+	descricao.setEstabelecimento("Estabelecimento");
+	transacao.setDescricao(descricao);
+	dto.setTransacao(transacao);
+	assertEquals("Verificar forma de pagamento da transação", validator.validate());
 
-        formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
-        transacao.setFormaPagamento(formaPagamento);
-        transacao.setDescricao(descricao);
-        dto.setTransacao(transacao);
+	FormaPagamentoRequestDTO formaPagamento = new FormaPagamentoRequestDTO();
+	transacao.setFormaPagamento(formaPagamento);
+	transacao.setDescricao(descricao);
+	dto.setTransacao(transacao);
+	assertEquals("Verificar parcelas da transação", validator.validate());
 
-        assertTrue(validator.validate().isEmpty());
-    }
-    private TransacaoRequestDTO criaDTOComDescricao(DescricaoRequestDTO descricao){
-        TransacaoRequestDTO dto = new TransacaoRequestDTO();
+	formaPagamento.setParcelas("1");
+	transacao.setFormaPagamento(formaPagamento);
+	transacao.setDescricao(descricao);
+	dto.setTransacao(transacao);
+	assertEquals("Verificar tipo da forma de pagamento", validator.validate());
 
-        TransacaoDTO transacao = new TransacaoDTO();
-        transacao.setId("123");
-        transacao.setCartao("1234");
+	formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
+	transacao.setFormaPagamento(formaPagamento);
+	transacao.setDescricao(descricao);
+	dto.setTransacao(transacao);
 
-        descricao.setValor("100.00");
-        descricao.setDataHora("01/05/2021 18:30:00");
-        descricao.setEstabelecimento("Estabelecimento");
-        transacao.setDescricao(descricao);
+	assertTrue(validator.validate().isEmpty());
+  }
 
-        FormaPagamentoRequestDTO formaPagamento = new FormaPagamentoRequestDTO();
-        formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
-        formaPagamento.setParcelas("1");
-        transacao.setFormaPagamento(formaPagamento);
+  private TransacaoRequestDTO criaDTOComDescricao(DescricaoRequestDTO descricao) {
+	TransacaoRequestDTO dto = new TransacaoRequestDTO();
 
-        dto.setTransacao(transacao);
+	TransacaoDTO transacao = new TransacaoDTO();
+	transacao.setId("123");
+	transacao.setCartao("1234");
 
-        return dto;
-    }
+	descricao.setValor("100.00");
+	descricao.setDataHora("01/05/2021 18:30:00");
+	descricao.setEstabelecimento("Estabelecimento");
+	transacao.setDescricao(descricao);
 
-    @Test
-    @DisplayName("Quando a dataHora é invalida, então a validação falha")
-    void quandoDataHoraInvalida_entaoValidacaoErro() {
-        TransacaoRequestValidator validator = criaValidator();
-        DescricaoRequestDTO descricao = new DescricaoRequestDTO();
-        TransacaoRequestDTO dto = criaDTOComDescricao(descricao);
+	FormaPagamentoRequestDTO formaPagamento = new FormaPagamentoRequestDTO();
+	formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
+	formaPagamento.setParcelas("1");
+	transacao.setFormaPagamento(formaPagamento);
 
-        descricao.setDataHora("18:30:00");
+	dto.setTransacao(transacao);
 
-        validator.setTransacao(dto);
+	return dto;
+  }
 
-        assertEquals("Data e hora inválidas", validator.validate());
+  @Test
+  @DisplayName("Quando a dataHora é invalida, então a validação falha")
+  void quandoDataHoraInvalida_entaoValidacaoErro() {
+	TransacaoRequestValidator validator = criaValidator();
+	DescricaoRequestDTO descricao = new DescricaoRequestDTO();
+	TransacaoRequestDTO dto = criaDTOComDescricao(descricao);
 
-    }
-    @Test
-    @DisplayName("Quando o valor é invalido, então a validação falha")
-    void quandoValorMenorIgualAZero_entaoValidacaoErro() {
-        TransacaoRequestValidator validator = criaValidator();
-        DescricaoRequestDTO descricao = new DescricaoRequestDTO();
-        TransacaoRequestDTO dto = criaDTOComDescricao(descricao);
+	descricao.setDataHora("18:30:00");
 
-        descricao.setValor("-100.00");
+	validator.setTransacao(dto);
 
-        validator.setTransacao(dto);
+	assertEquals("Data e hora inválidas", validator.validate());
 
-        assertEquals("Valor inválido", validator.validate());
+  }
 
-        descricao.setValor("0.00");
+  @Test
+  @DisplayName("Quando o valor é invalido, então a validação falha")
+  void quandoValorMenorIgualAZero_entaoValidacaoErro() {
+	TransacaoRequestValidator validator = criaValidator();
+	DescricaoRequestDTO descricao = new DescricaoRequestDTO();
+	TransacaoRequestDTO dto = criaDTOComDescricao(descricao);
 
-        validator.setTransacao(dto);
+	descricao.setValor("-100.00");
 
-        assertEquals("Valor inválido", validator.validate());
+	validator.setTransacao(dto);
 
-        descricao.setValor("ABC");
+	assertEquals("Valor inválido", validator.validate());
 
-        validator.setTransacao(dto);
+	descricao.setValor("0.00");
 
-        assertEquals("Valor inválido", validator.validate());
+	validator.setTransacao(dto);
 
-        descricao.setValor("0.001");
+	assertEquals("Valor inválido", validator.validate());
 
-        validator.setTransacao(dto);
+	descricao.setValor("ABC");
 
-        assertEquals("Valor inválido", validator.validate());
+	validator.setTransacao(dto);
 
-        descricao.setValor(".0001");
+	assertEquals("Valor inválido", validator.validate());
 
-        validator.setTransacao(dto);
+	descricao.setValor("0.001");
 
-        assertEquals("Valor inválido", validator.validate());
+	validator.setTransacao(dto);
 
-        descricao.setValor("0.01");
+	assertEquals("Valor inválido", validator.validate());
 
-        validator.setTransacao(dto);
+	descricao.setValor(".0001");
 
-        assertTrue(validator.validate().isEmpty());
-    }
-    @Test
-    @DisplayName("Quando o estabelecimento é invalido, então a validação falha")
-    void quandoEstabelecimentoInvalido_entaoValidacaoErro() {
-        TransacaoRequestValidator validator = criaValidator();
-        DescricaoRequestDTO descricao = new DescricaoRequestDTO();
-        TransacaoRequestDTO dto = criaDTOComDescricao(descricao);
+	validator.setTransacao(dto);
 
-        descricao.setEstabelecimento("");
+	assertEquals("Valor inválido", validator.validate());
 
-        validator.setTransacao(dto);
+	descricao.setValor("0.01");
 
-        assertEquals("Verificar estabelecimento da transação", validator.validate());
+	validator.setTransacao(dto);
 
-        descricao.setEstabelecimento(null);
+	assertTrue(validator.validate().isEmpty());
+  }
 
-        validator.setTransacao(dto);
+  @Test
+  @DisplayName("Quando o estabelecimento é invalido, então a validação falha")
+  void quandoEstabelecimentoInvalido_entaoValidacaoErro() {
+	TransacaoRequestValidator validator = criaValidator();
+	DescricaoRequestDTO descricao = new DescricaoRequestDTO();
+	TransacaoRequestDTO dto = criaDTOComDescricao(descricao);
 
-        assertEquals("Verificar estabelecimento da transação", validator.validate());
+	descricao.setEstabelecimento("");
 
-        descricao.setEstabelecimento("ABC");
+	validator.setTransacao(dto);
 
-        validator.setTransacao(dto);
+	assertEquals("Verificar estabelecimento da transação", validator.validate());
 
-        assertTrue(validator.validate().isEmpty());
-    }
+	descricao.setEstabelecimento(null);
 
-    private TransacaoRequestDTO criaDTOComFormaPagamento(FormaPagamentoRequestDTO formaPagamento){
-        TransacaoRequestDTO dto = new TransacaoRequestDTO();
+	validator.setTransacao(dto);
 
-        TransacaoDTO transacao = new TransacaoDTO();
-        transacao.setId("123");
-        transacao.setCartao("1234");
+	assertEquals("Verificar estabelecimento da transação", validator.validate());
 
-        DescricaoRequestDTO descricao = new DescricaoRequestDTO();
-        descricao.setValor("100.00");
-        descricao.setDataHora("01/05/2021 18:30:00");
-        descricao.setEstabelecimento("Estabelecimento");
-        transacao.setDescricao(descricao);
+	descricao.setEstabelecimento("ABC");
 
-        formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
-        formaPagamento.setParcelas("1");
-        transacao.setFormaPagamento(formaPagamento);
+	validator.setTransacao(dto);
 
-        dto.setTransacao(transacao);
+	assertTrue(validator.validate().isEmpty());
+  }
 
-        return dto;
-    }
+  private TransacaoRequestDTO criaDTOComFormaPagamento(FormaPagamentoRequestDTO formaPagamento) {
+	TransacaoRequestDTO dto = new TransacaoRequestDTO();
 
-    @Test
-    @DisplayName("Quando a parcela é invalida, então a validação falha")
-    void quandoParcelaMenorIgualAZero_entaoValidacaoErro() {
-        TransacaoRequestValidator validator = criaValidator();
-        FormaPagamentoRequestDTO formaPagamento = new FormaPagamentoRequestDTO();
-        TransacaoRequestDTO dto = criaDTOComFormaPagamento(formaPagamento);
+	TransacaoDTO transacao = new TransacaoDTO();
+	transacao.setId("123");
+	transacao.setCartao("1234");
 
-        formaPagamento.setParcelas("-1");
+	DescricaoRequestDTO descricao = new DescricaoRequestDTO();
+	descricao.setValor("100.00");
+	descricao.setDataHora("01/05/2021 18:30:00");
+	descricao.setEstabelecimento("Estabelecimento");
+	transacao.setDescricao(descricao);
 
-        validator.setTransacao(dto);
+	formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
+	formaPagamento.setParcelas("1");
+	transacao.setFormaPagamento(formaPagamento);
 
-        assertEquals("Parcelas inválidas", validator.validate());
+	dto.setTransacao(transacao);
 
-        formaPagamento.setParcelas("0");
+	return dto;
+  }
 
-        validator.setTransacao(dto);
+  @Test
+  @DisplayName("Quando a parcela é invalida, então a validação falha")
+  void quandoParcelaMenorIgualAZero_entaoValidacaoErro() {
+	TransacaoRequestValidator validator = criaValidator();
+	FormaPagamentoRequestDTO formaPagamento = new FormaPagamentoRequestDTO();
+	TransacaoRequestDTO dto = criaDTOComFormaPagamento(formaPagamento);
 
-        assertEquals("Parcelas inválidas", validator.validate());
+	formaPagamento.setParcelas("-1");
 
-        formaPagamento.setParcelas("ABC");
+	validator.setTransacao(dto);
 
-        validator.setTransacao(dto);
+	assertEquals("Parcelas inválidas", validator.validate());
 
-        assertEquals("Parcelas inválidas", validator.validate());
-        formaPagamento.setParcelas("1");
+	formaPagamento.setParcelas("0");
 
-        validator.setTransacao(dto);
+	validator.setTransacao(dto);
 
-        assertTrue(validator.validate().isEmpty());
-    }
+	assertEquals("Parcelas inválidas", validator.validate());
 
-    @Test
-    @DisplayName("Quando o tipo de forma de pagamento é invalido, então a validação falha")
-    void quandoTipoFormaPagamentoInvalido_entaoValidacaoErro() {
-        TransacaoRequestValidator validator = criaValidator();
-        FormaPagamentoRequestDTO formaPagamento = new FormaPagamentoRequestDTO();
-        TransacaoRequestDTO dto = criaDTOComFormaPagamento(formaPagamento);
+	formaPagamento.setParcelas("ABC");
 
-        formaPagamento.setTipo(null);
+	validator.setTransacao(dto);
 
-        validator.setTransacao(dto);
+	assertEquals("Parcelas inválidas", validator.validate());
+	formaPagamento.setParcelas("1");
 
-        assertEquals("Verificar tipo da forma de pagamento", validator.validate());
+	validator.setTransacao(dto);
 
-        formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
+	assertTrue(validator.validate().isEmpty());
+  }
 
-        validator.setTransacao(dto);
+  @Test
+  @DisplayName("Quando o tipo de forma de pagamento é invalido, então a validação falha")
+  void quandoTipoFormaPagamentoInvalido_entaoValidacaoErro() {
+	TransacaoRequestValidator validator = criaValidator();
+	FormaPagamentoRequestDTO formaPagamento = new FormaPagamentoRequestDTO();
+	TransacaoRequestDTO dto = criaDTOComFormaPagamento(formaPagamento);
 
-        assertTrue(validator.validate().isEmpty());
+	formaPagamento.setTipo(null);
 
-        formaPagamento.setTipo(TipoFormaPagamento.PARCELADO_EMISSOR);
+	validator.setTransacao(dto);
 
-        validator.setTransacao(dto);
+	assertEquals("Verificar tipo da forma de pagamento", validator.validate());
 
-        assertTrue(validator.validate().isEmpty());
+	formaPagamento.setTipo(TipoFormaPagamento.AVISTA);
 
-        formaPagamento.setTipo(TipoFormaPagamento.PARCELADO_LOJA);
+	validator.setTransacao(dto);
 
-        validator.setTransacao(dto);
+	assertTrue(validator.validate().isEmpty());
 
-        assertTrue(validator.validate().isEmpty());
-    }
+	formaPagamento.setTipo(TipoFormaPagamento.PARCELADO_EMISSOR);
+
+	validator.setTransacao(dto);
+
+	assertTrue(validator.validate().isEmpty());
+
+	formaPagamento.setTipo(TipoFormaPagamento.PARCELADO_LOJA);
+
+	validator.setTransacao(dto);
+
+	assertTrue(validator.validate().isEmpty());
+  }
 
 }

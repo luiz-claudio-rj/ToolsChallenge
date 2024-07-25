@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DescricaoRequestDTO {
-    private String valor;
-    private String dataHora;
-    private String estabelecimento;
+  private String valor;
+  private String dataHora;
+  private String estabelecimento;
 }

@@ -18,13 +18,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Descricao {
-    private String valor;
+  private String valor;
 
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-    private LocalDateTime dataHora;
+  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+  private LocalDateTime dataHora;
 
-    private String estabelecimento;
-    private String nsu;
-    private String codigoAutorizacao;
-    private Status status;
+  private String estabelecimento;
+  private String nsu;
+  private String codigoAutorizacao;
+  private Status status;
 }

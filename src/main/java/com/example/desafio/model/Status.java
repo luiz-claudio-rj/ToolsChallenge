@@ -7,13 +7,13 @@ import lombok.Getter;
  */
 @Getter
 public enum Status {
-    AUTORIZADO("AUTORIZADO"),
-    NEGADO("NEGADO");
+  AUTORIZADO("AUTORIZADO"),
+  NEGADO("NEGADO");
 
-    private final String descricao;
+  private final String descricao;
 
-    Status(String descricao) {
-        this.descricao = descricao;
-    }
+  Status(String descricao) {
+	this.descricao = descricao;
+  }
 
 }

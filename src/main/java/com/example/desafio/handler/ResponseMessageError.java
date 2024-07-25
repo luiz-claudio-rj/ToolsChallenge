@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 /**
  * Classe que representa a mensagem de erro
  */
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseMessageError {
-    private LocalDateTime dateTime;
-    private String message;
-    private String path;
+  private LocalDateTime dateTime;
+  private String message;
+  private String path;
 }

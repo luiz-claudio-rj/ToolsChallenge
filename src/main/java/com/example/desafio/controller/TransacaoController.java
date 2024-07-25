@@ -16,54 +16,53 @@ import java.util.List;
 @RequestMapping("/api/transacoes")
 public class TransacaoController {
 
-    @Autowired
-    private TransacaoService transacaoService;
+  @Autowired
+  private TransacaoService transacaoService;
 
-    /**
-     * Realiza uma transação
-     *
-     * @param transacaoRequestDTO transacaoRequestDTO
-     * @return ResponseEntity<Transacao>
-     */
-    @PostMapping("/pagamento")
-    public ResponseEntity<Transacao> realizarTransacao(@RequestBody TransacaoRequestDTO transacaoRequestDTO) {
-        Transacao transacao = transacaoService.salvarTransacao(transacaoRequestDTO);
-        return ResponseEntity.ok(transacao);
-    }
+  /**
+   * Realiza uma transação
+   *
+   * @param transacaoRequestDTO transacaoRequestDTO
+   * @return ResponseEntity<Transacao>
+   */
+  @PostMapping("/pagamento")
+  public ResponseEntity<Transacao> realizarTransacao(@RequestBody TransacaoRequestDTO transacaoRequestDTO) {
+	Transacao transacao = transacaoService.salvarTransacao(transacaoRequestDTO);
+	return ResponseEntity.ok(transacao);
+  }
 
-    /**
-     * Estorna uma transação
-     *
-     * @param id String
-     * @return
-     * ResponseEntity<Transacao>
-     */
-    @GetMapping("/estorno/{id}")
-    public ResponseEntity<Transacao> estornarPagamento(@PathVariable String id) {
-        Transacao transacao = transacaoService.estornarTransacao(id);
-        return transacao != null ? ResponseEntity.ok(transacao) : ResponseEntity.notFound().build();
-    }
+  /**
+   * Estorna uma transação
+   *
+   * @param id String
+   * @return ResponseEntity<Transacao>
+   */
+  @GetMapping("/estorno/{id}")
+  public ResponseEntity<Transacao> estornarPagamento(@PathVariable String id) {
+	Transacao transacao = transacaoService.estornarTransacao(id);
+	return transacao != null ? ResponseEntity.ok(transacao) : ResponseEntity.notFound().build();
+  }
 
-    /**
-     * Consulta uma transação
-     *
-     * @param id String
-     * @return ResponseEntity<Transacao>
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<Transacao> consultarTransacao(@PathVariable String id) {
-        Transacao transacao = transacaoService.consultarTransacao(id);
-        return transacao != null ? ResponseEntity.ok(transacao) : ResponseEntity.notFound().build();
-    }
+  /**
+   * Consulta uma transação
+   *
+   * @param id String
+   * @return ResponseEntity<Transacao>
+   */
+  @GetMapping("/{id}")
+  public ResponseEntity<Transacao> consultarTransacao(@PathVariable String id) {
+	Transacao transacao = transacaoService.consultarTransacao(id);
+	return transacao != null ? ResponseEntity.ok(transacao) : ResponseEntity.notFound().build();
+  }
 
-    /**
-     * Consulta todas as transações
-     *
-     * @return ResponseEntity<List<Transacao>>
-     */
-    @GetMapping
-    public ResponseEntity<List<Transacao>> consultarTodasTransacoes() {
-        List<Transacao> transacoes = transacaoService.consultarTodasTransacoes();
-        return ResponseEntity.ok(transacoes);
-    }
+  /**
+   * Consulta todas as transações
+   *
+   * @return ResponseEntity<List < Transacao>>
+   */
+  @GetMapping
+  public ResponseEntity<List<Transacao>> consultarTodasTransacoes() {
+	List<Transacao> transacoes = transacaoService.consultarTodasTransacoes();
+	return ResponseEntity.ok(transacoes);
+  }
 }

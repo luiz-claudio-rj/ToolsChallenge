@@ -15,6 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FormaPagamento {
-    private TipoFormaPagamento tipo;
-    private Integer parcelas;
+  private TipoFormaPagamento tipo;
+  private Integer parcelas;
 }

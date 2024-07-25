@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 /**
  * Classe que representa a transação
  */
@@ -12,9 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransacaoDTO {
-    private String cartao;
-    private String id;
-    private DescricaoRequestDTO descricao;
-    private FormaPagamentoRequestDTO formaPagamento;
+  private String cartao;
+  private String id;
+  private DescricaoRequestDTO descricao;
+  private FormaPagamentoRequestDTO formaPagamento;
 
 }

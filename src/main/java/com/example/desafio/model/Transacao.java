@@ -13,15 +13,15 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Transacao {
-    @Id
-    private String id;
-    private String cartao;
+  @Id
+  private String id;
+  private String cartao;
 
-    @Embedded
-    private Descricao descricao;
+  @Embedded
+  private Descricao descricao;
 
-    @Embedded
-    private FormaPagamento formaPagamento;
+  @Embedded
+  private FormaPagamento formaPagamento;
 }
 
 
