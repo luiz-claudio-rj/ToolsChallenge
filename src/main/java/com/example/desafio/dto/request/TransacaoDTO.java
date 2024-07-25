@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+/**
+ * Classe que representa a transação
+ */
 @Setter
 @Getter
 @AllArgsConstructor

@@ -17,22 +17,33 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Classe que contém os serviços relacionados a transação
+ */
 @Service
 public class TransacaoService {
 
     @Autowired
     private TransacaoRepository transacaoRepository;
 
-
+    /**
+     * Salvar uma transação
+     *
+     * @param transacaoRequestDTO transacaoRequestDTO
+     * @return Transacao
+     */
     public Transacao salvarTransacao(TransacaoRequestDTO transacaoRequestDTO) {
-
         validarTransacao(transacaoRequestDTO);
-
         Transacao transacao = criarTransacao(transacaoRequestDTO);
-
         return transacaoRepository.save(transacao);
     }
 
+    /**
+     * Cria uma transação a partir do DTO
+     *
+     * @param transacaoRequestDTO transacaoRequestDTO
+     * @return Transacao
+     */
     private static Transacao criarTransacao(TransacaoRequestDTO transacaoRequestDTO) {
         Transacao transacao = new Transacao();
 
@@ -60,11 +71,13 @@ public class TransacaoService {
         return transacao;
     }
 
+    /**
+     * Valida corpo da requisicao
+     *
+     * @param transacaoRequestDTO transacaoRequestDTO
+     */
     private void validarTransacao(TransacaoRequestDTO transacaoRequestDTO) {
-        TransacaoRequestValidator validator = new TransacaoRequestValidator(
-                transacaoRequestDTO,
-                transacaoRepository
-        );
+        TransacaoRequestValidator validator = new TransacaoRequestValidator(transacaoRequestDTO, transacaoRepository);
 
         String validacao = validator.validate();
         if (!validacao.isEmpty()) {
@@ -72,20 +85,32 @@ public class TransacaoService {
         }
     }
 
-    public Transacao consultarTransacao(Long id) {
-        return transacaoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Transação não encontrada")
-        );
+    /**
+     * Consultar uma transação pelo id
+     *
+     * @param id id
+     * @return Transacao
+     */
+    public Transacao consultarTransacao(String id) {
+        return transacaoRepository.findById(id).orElseThrow(() -> new NotFoundException("Transação não encontrada"));
     }
 
+    /**
+     * Consultar todas as transações
+     * @return List<Transacao>
+     */
     public List<Transacao> consultarTodasTransacoes() {
         return transacaoRepository.findAll();
     }
 
-    public Transacao estornarTransacao(Long id) {
-        Transacao transacao = transacaoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Transação não encontrada")
-        );
+    /**
+     * Estornar uma transação
+     *
+     * @param id id
+     * @return Transacao
+     */
+    public Transacao estornarTransacao(String id) {
+        Transacao transacao = transacaoRepository.findById(id).orElseThrow(() -> new NotFoundException("Transação não encontrada"));
         transacao.getDescricao().setStatus(Status.NEGADO);
         return transacaoRepository.save(transacao);
     }

@@ -6,7 +6,9 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-
+/**
+ * Classe que representa a transação
+ */
 @Entity
 @Setter
 @Getter

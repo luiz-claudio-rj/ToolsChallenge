@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -78,9 +78,7 @@ class TransacaoServiceTest {
     void salvarTransacao_erroUnprocessableException() {
         TransacaoRequestDTO transacao = new TransacaoRequestDTO();
 
-        UnprocessableException exception = assertThrows(UnprocessableException.class, () -> {
-            transacaoService.salvarTransacao(transacao);
-        });
+        UnprocessableException exception = assertThrows(UnprocessableException.class, () -> transacaoService.salvarTransacao(transacao));
 
         assertEquals("Transação não pode ser nula", exception.getMessage());
     }
@@ -88,21 +86,19 @@ class TransacaoServiceTest {
     @Test
     void consultarTransacao_sucesso() {
         Transacao transacao = new Transacao();
-        when(transacaoRepository.findById(anyLong())).thenReturn(Optional.of(transacao));
+        when(transacaoRepository.findById(anyString())).thenReturn(Optional.of(transacao));
 
-        Transacao result = transacaoService.consultarTransacao(1L);
+        Transacao result = transacaoService.consultarTransacao("1");
 
         assertNotNull(result);
-        verify(transacaoRepository, times(1)).findById(1L);
+        verify(transacaoRepository, times(1)).findById("1");
     }
 
     @Test
     void consultarTransacao_naoEncontrada() {
-        when(transacaoRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(transacaoRepository.findById(anyString())).thenReturn(Optional.empty());
 
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> {
-            transacaoService.consultarTransacao(1L);
-        });
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> transacaoService.consultarTransacao("1"));
 
         assertEquals("Transação não encontrada", thrown.getMessage());
     }
@@ -124,24 +120,22 @@ class TransacaoServiceTest {
         Transacao transacao = new Transacao();
         Descricao descricao = new Descricao();
         transacao.setDescricao(descricao);
-        when(transacaoRepository.findById(anyLong())).thenReturn(Optional.of(transacao));
+        when(transacaoRepository.findById(anyString())).thenReturn(Optional.of(transacao));
         when(transacaoRepository.save(any(Transacao.class))).thenReturn(transacao);
 
-        Transacao result = transacaoService.estornarTransacao(1L);
+        Transacao result = transacaoService.estornarTransacao("1");
 
         assertNotNull(result);
         assertEquals(Status.NEGADO, result.getDescricao().getStatus());
-        verify(transacaoRepository, times(1)).findById(1L);
+        verify(transacaoRepository, times(1)).findById("1");
         verify(transacaoRepository, times(1)).save(any(Transacao.class));
     }
 
     @Test
     void estornarTransacao_naoEncontrada() {
-        when(transacaoRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(transacaoRepository.findById(anyString())).thenReturn(Optional.empty());
 
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> {
-            transacaoService.estornarTransacao(1L);
-        });
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> transacaoService.estornarTransacao("1"));
 
         assertEquals("Transação não encontrada", thrown.getMessage());
     }

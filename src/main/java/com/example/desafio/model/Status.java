@@ -1,5 +1,11 @@
 package com.example.desafio.model;
 
+import lombok.Getter;
+
+/**
+ * Enum que representa o status da transação
+ */
+@Getter
 public enum Status {
     AUTORIZADO("AUTORIZADO"),
     NEGADO("NEGADO");
@@ -10,7 +16,4 @@ public enum Status {
         this.descricao = descricao;
     }
 
-    public String getDescricao() {
-        return descricao;
-    }
 }

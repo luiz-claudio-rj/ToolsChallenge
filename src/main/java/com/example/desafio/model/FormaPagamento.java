@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Classe que representa a Forma de Pagamento da transação
+ */
 @Embeddable
 @Setter
 @Getter

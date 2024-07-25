@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
+/**
+ * Classe que valida a transação recebida no request
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,13 +25,64 @@ public class TransacaoRequestValidator {
         this.transacaoRepository = transacaoRepository;
     }
 
+    /**
+     * Valida a transação recebida no request
+     *
+     * @return String com a mensagem de erro
+     *        ou String vazia se a transação for válida
+     */
     public String validate() {
-        if (transacao == null) {
+        String mensagem = validaTransacaoNula();
+        if (mensagem != null) return mensagem;
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            LocalDateTime.parse(transacao.getTransacao().getDescricao().getDataHora(), formatter);
+        } catch (Exception e) {
+            return "Data e hora inválidas";
+        }
+
+        String mensagemInvalido = "Valor inválido";
+        try {
+            String valorString = transacao.getTransacao().getDescricao().getValor();
+            Pattern pattern = Pattern.compile("^\\d+\\.\\d{2}$");
+            if (!pattern.matcher(valorString).matches()) {
+                return mensagemInvalido;
+            }
+            double valorNumerico = Double.parseDouble(transacao.getTransacao().getDescricao().getValor());
+            if (valorNumerico <= 0) {
+                return mensagemInvalido;
+            }
+        } catch (NumberFormatException e) {
+            return mensagemInvalido;
+        }
+
+        try {
+            int parcela = Integer.parseInt(transacao.getTransacao().getFormaPagamento().getParcelas());
+            if (parcela <= 0) {
+                return "Parcelas inválidas";
+            }
+        } catch (NumberFormatException e) {
+            return "Parcelas inválidas";
+        }
+
+        if (transacaoRepository.existsById(transacao.getTransacao().getId())) {
+            return "Transação já existente";
+        }
+
+        return "";
+    }
+
+    /**
+     * Valida se a transação é nula ou se algum dos campos obrigatórios está nulo
+     *
+     * @return String com a mensagem de erro ou null se a transação for válida
+     */
+    private String validaTransacaoNula() {
+        if (transacao == null || transacao.getTransacao() == null) {
             return "Transação não pode ser nula";
         }
-        if (transacao.getTransacao() == null) {
-            return "Transação não pode ser nula";
-        }
+
         if (transacao.getTransacao().getId() == null || transacao.getTransacao().getId().isEmpty()) {
             return "Verificar id da transação";
         }
@@ -56,47 +110,6 @@ public class TransacaoRequestValidator {
         if (transacao.getTransacao().getFormaPagamento().getTipo() == null) {
             return "Verificar tipo da forma de pagamento";
         }
-
-        try {
-            Long.valueOf(transacao.getTransacao().getId());
-        } catch (NumberFormatException e) {
-            return "Id inválido";
-        }
-
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-            LocalDateTime.parse(transacao.getTransacao().getDescricao().getDataHora(), formatter);
-        } catch (Exception e) {
-            return "Data e hora inválidas";
-        }
-
-        try {
-            String valorString = transacao.getTransacao().getDescricao().getValor();
-            Pattern pattern = Pattern.compile("^\\d+\\.\\d{2}$");
-            if (!pattern.matcher(valorString).matches()) {
-                return "Valor inválido";
-            }
-            double valorNumerico = Double.parseDouble(transacao.getTransacao().getDescricao().getValor());
-            if (valorNumerico <= 0) {
-                return "Valor inválido";
-            }
-        } catch (NumberFormatException e) {
-            return "Valor inválido";
-        }
-
-        try {
-            Integer parcela = Integer.parseInt(transacao.getTransacao().getFormaPagamento().getParcelas());
-            if (parcela <= 0) {
-                return "Parcelas inválidas";
-            }
-        } catch (NumberFormatException e) {
-            return "Parcelas inválidas";
-        }
-
-        if (transacaoRepository.existsById(Long.valueOf(transacao.getTransacao().getId()))) {
-            return "Transação já existente";
-        }
-
-        return "";
+        return null;
     }
 }

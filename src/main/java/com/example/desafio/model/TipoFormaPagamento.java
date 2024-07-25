@@ -4,6 +4,9 @@ import com.example.desafio.exception.UnprocessableException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Enum que representa o tipo de forma de pagamento da transação
+ */
 public enum TipoFormaPagamento {
     AVISTA("AVISTA"),
     PARCELADO_LOJA("PARCELADO LOJA"),

@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Classe que representa a descrição da transação
+ */
 @Embeddable
 @Setter
 @Getter
