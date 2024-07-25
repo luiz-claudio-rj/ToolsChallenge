@@ -26,16 +26,14 @@ public class TransacaoService {
 
     public Transacao salvarTransacao(TransacaoRequestDTO transacaoRequestDTO) {
 
-        TransacaoRequestValidator validator = new TransacaoRequestValidator(
-                transacaoRequestDTO,
-                transacaoRepository
-        );
+        validarTransacao(transacaoRequestDTO);
 
-        String validacao = validator.validate();
-        if (!validacao.isEmpty()) {
-            throw new UnprocessableException(validacao);
-        }
+        Transacao transacao = criarTransacao(transacaoRequestDTO);
 
+        return transacaoRepository.save(transacao);
+    }
+
+    private static Transacao criarTransacao(TransacaoRequestDTO transacaoRequestDTO) {
         Transacao transacao = new Transacao();
 
         transacao.setId(transacaoRequestDTO.getTransacao().getId());
@@ -59,8 +57,19 @@ public class TransacaoService {
         descricao.setStatus(Status.AUTORIZADO);
 
         transacao.setDescricao(descricao);
+        return transacao;
+    }
 
-        return transacaoRepository.save(transacao);
+    private void validarTransacao(TransacaoRequestDTO transacaoRequestDTO) {
+        TransacaoRequestValidator validator = new TransacaoRequestValidator(
+                transacaoRequestDTO,
+                transacaoRepository
+        );
+
+        String validacao = validator.validate();
+        if (!validacao.isEmpty()) {
+            throw new UnprocessableException(validacao);
+        }
     }
 
     public Transacao consultarTransacao(Long id) {
